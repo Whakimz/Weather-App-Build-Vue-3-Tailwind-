@@ -10,17 +10,31 @@
         </div>
       </router-link>
       <div class="flex gap-3 flex-1 justify-end">
-        <i
-          class="fa-solid fa-circle-info text-xl hover:text-weather-secondary duratioon-150 cursor-pointer"
-          @click="toggleModal"
-        ></i>
-        <i
-          class="fa-solid fa-plus text-xl hover:text-weather-secondary duratioon-150 cursor-pointer"
-        ></i>
+        <div class="relative group">
+          <i
+            class="fa-solid fa-circle-info text-xl hover:text-weather-secondary duration-150 cursor-pointer"
+            @click="toggleModal"
+          ></i>
+          <div
+            class="absolute left-1/2 transform -translate-x-1/2 mt-2 transition-opacity duration-300 ease-in-out opacity-0 group-hover:opacity-100 bg-gray-800 text-white text-sm rounded py-1 px-2"
+          >
+            Information
+          </div>
+        </div>
+        <div class="relative group">
+          <i
+            class="fa-solid fa-plus text-xl hover:text-weather-secondary duration-150 cursor-pointer"
+          ></i>
+          <div
+            class="absolute left-1/2 transform -translate-x-1/2 mt-2 transition-opacity duration-300 ease-in-out opacity-0 group-hover:opacity-100 bg-gray-800 text-white text-sm rounded py-1 px-2"
+          >
+            Add
+          </div>
+        </div>
       </div>
       <BaseModal :modalActive="modalActive" @close-modal="toggleModal">
         <div class="text-black">
-          <h1 class="text-2xl mb-1">About:</h1>
+          <h1 class="text-2xl mb-1">About</h1>
           <p class="mb-4">
             The Local Weather allows you to track the current and future weather
             of cities of your choosing.
@@ -39,11 +53,10 @@
               will save the city to view at a later time on the home page.
             </li>
           </ol>
-
           <h2 class="text-2xl">Removing a city</h2>
           <p>
             If you no longer wish to track a city, simply select the city within
-            the home page. At the bottom of the page, there will be am option to
+            the home page. At the bottom of the page, there will be an option to
             delete the city.
           </p>
         </div>
@@ -57,7 +70,8 @@ import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import BaseModal from './BaseModal.vue'
 
-const modalActive = ref(null)
+const modalActive = ref(false)
+
 const toggleModal = () => {
   modalActive.value = !modalActive.value
 }
