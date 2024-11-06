@@ -21,9 +21,10 @@
             Information
           </div>
         </div>
-        <div class="relative group">
+        <div v-if="route.query.preview" class="relative group">
           <i
             class="fa-solid fa-plus text-xl hover:text-weather-secondary duration-150 cursor-pointer"
+            @click="addCity"
           ></i>
           <div
             class="absolute left-1/2 transform -translate-x-1/2 mt-2 transition-opacity duration-300 ease-in-out opacity-0 group-hover:opacity-100 bg-gray-800 text-white text-sm rounded py-1 px-2"
@@ -67,9 +68,35 @@
 
 <script setup>
 import { ref } from 'vue'
-import { RouterLink } from 'vue-router'
+import { uid } from 'uid'
+import { RouterLink, useRoute, useRouter } from 'vue-router'
 import BaseModal from './BaseModal.vue'
 
+const savedCities = ref([])
+const route = useRoute()
+const router = useRouter()
+const addCity = () => {
+  if (localStorage.getItem('savedCities')) {
+    savedCities.value = JSON.parse(localStorage.getItem('savedCities'))
+  }
+
+  const locationObj = {
+    id: uid(),
+    state: route.params.state,
+    city: route.params.city,
+    coords: {
+      lat: route.query.lat,
+      lng: route.query.lng,
+    },
+  }
+  savedCities.value.push(locationObj)
+  localStorage.setItem('savedCities', JSON.stringify(savedCities.value))
+
+  let query = Object.assign({}, route.query)
+  delete query.preview
+  query.id = locationObj.id
+  router.replace({ query })
+}
 const modalActive = ref(false)
 
 const toggleModal = () => {

@@ -104,14 +104,23 @@
         </div>
       </div>
     </div>
+
+    <div
+      class="flex items-center gap-2 py-12 text-white cursor-pointer duration-150 hover:text-red-500"
+      @click="removeCity"
+    >
+      <i class="fa-solid fa-trash"></i>
+      <p>Remove City</p>
+    </div>
   </div>
 </template>
 
 <script setup>
 import axios from 'axios'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
+const router = useRouter()
 
 // Function to convert Fahrenheit to Celsius
 const convertToCelsius = fahrenheit => {
@@ -135,10 +144,26 @@ const getWeatherData = async () => {
       hour.currentTime = utc + 1000 * weatherData.data.timezone_offset
     })
 
+    await new Promise(res => setTimeout(res, 1000))
+
     return weatherData.data
   } catch (err) {
     console.log(err)
   }
 }
 const weatherData = await getWeatherData()
+
+const removeCity = () => {
+  // Parse saved cities from localStorage or initialize as an empty array if null
+  const cities = JSON.parse(localStorage.getItem('savedCities')) || []
+
+  // Filter out the city with the specified ID
+  const updatedCities = cities.filter(city => city.id !== route.query.id)
+
+  // Save the updated list back to localStorage
+  localStorage.setItem('savedCities', JSON.stringify(updatedCities))
+
+  // Redirect to home route
+  router.push({ name: 'home' })
+}
 </script>
