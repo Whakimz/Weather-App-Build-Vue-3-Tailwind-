@@ -16,7 +16,7 @@
           >
             <slot />
             <button
-              class="text-white mt-8 bg-blue-600 py-2 px-6 rounded-md hover:bg-blue-700 transition-colors duration-300"
+              class="text-white mt-8 bg-weather-primary py-2 px-6 rounded-md hover:bg-weather-secondary transition-colors duration-300"
               @click="$emit('close-modal')"
             >
               Close
