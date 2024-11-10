@@ -1,28 +1,49 @@
 <template>
   <main class="container text-white">
-    <div class="pt-4 mb-8 relative">
-      <input
-        type="text"
-        v-model="searchQuery"
-        @input="getSearchResults"
-        placeholder="Search for a city or state"
-        class="py-2 px-1 w-full bg-transparent border-b focus:border-weather-secondary focus:outline-none focus:shadow-[0px_1px_0_0_#004E71]"
-      />
+    <div class="pt-4 mb-8 relative" @click="closeSearch">
+      <!-- Input Search with DaisyUI styling and icons -->
+      <div class="relative">
+        <!-- Search Icon -->
+        <i
+          class="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400 fa fa-search"
+        ></i>
+        <!-- Input Box -->
+        <input
+          type="text"
+          v-model="searchQuery"
+          @input="getSearchResults"
+          :placeholder="$t('placeholderSearch')"
+          class="input input-bordered w-full pl-10 bg-transparent focus:outline-none focus:ring-2 focus:ring-weather-secondary"
+        />
+        <!-- Clear Button -->
+        <button
+          v-if="searchQuery"
+          @click.stop="clearSearch"
+          class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400"
+        >
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+
+      <!-- Search Results -->
       <ul
-        class="absolute bg-weather-secondary text-white w-full shadow-md py-2 px-1 top-[66px]"
+        class="absolute bg-weather-secondary text-white w-full shadow-md py-2 px-1 top-[66px] rounded-b-lg z-50"
         v-if="mapboxSearchResults"
       >
-        <p class="py-2" v-if="searchError">
-          Sorry, something went wrong, please try again.
+        <p class="py-2 text-center" v-if="searchError">
+          {{ $t('pline15') }}
         </p>
-        <p class="py-2" v-if="!searchError && mapboxSearchResults.length === 0">
-          No results match your query, try a different term.
+        <p
+          class="py-2 text-center"
+          v-if="!searchError && mapboxSearchResults.length === 0"
+        >
+          {{ $t('pline19') }}
         </p>
         <template v-else>
           <li
             v-for="searchResult in mapboxSearchResults"
             :key="searchResult.id"
-            class="py-2 cursor-pointer"
+            class="py-2 cursor-pointer hover:bg-weather-secondary hover:text-white rounded transition-colors"
             @click="previewCity(searchResult)"
           >
             {{ searchResult.place_name }}
@@ -30,6 +51,8 @@
         </template>
       </ul>
     </div>
+
+    <!-- City List Section -->
     <div class="flex flex-col gap-4">
       <Suspense>
         <CityList />
@@ -88,6 +111,56 @@ const getSearchResults = () => {
     mapboxSearchResults.value = null
   }, 300)
 }
+
+const clearSearch = () => {
+  searchQuery.value = ''
+  mapboxSearchResults.value = null
+}
+
+const closeSearch = e => {
+  // Close search if clicked outside of the input or result list
+  if (!e.target.closest('.pt-4.mb-8.relative')) {
+    mapboxSearchResults.value = null
+  }
+}
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+/* Style the input with DaisyUI */
+.input-bordered {
+  border-width: 2px;
+  border-color: #004e71;
+}
+
+.input-primary {
+  border-color: #004e71;
+}
+
+.input:hover {
+  border-color: #006f94;
+}
+
+.focus\:ring-weather-secondary:focus {
+  box-shadow: 0px 0px 0px 4px rgba(0, 142, 169, 0.5);
+}
+
+/* Ensure search results are above other components */
+ul {
+  z-index: 50; /* Ensure it is above other components */
+  position: absolute;
+  top: 66px; /* Adjust to your layout */
+  left: 0;
+}
+
+/* Add some styling for the search result list */
+li:hover {
+  background-color: #004e71; /* Hover effect for each result */
+  color: white;
+}
+
+/* Style the icon inside the input */
+.fa-search,
+.fa-times {
+  font-size: 1.2rem;
+}
+</style>

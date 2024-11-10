@@ -6,8 +6,7 @@
       class="text-white p-4 bg-weather-secondary w-full text-center"
     >
       <p>
-        You are currently previewing this city, click the "+" icon to start
-        tracking this city.
+        {{ $t('pline8') }}
       </p>
     </div>
     <!-- Weather Overview -->
@@ -15,15 +14,15 @@
       <h1 class="text-4xl mb-2">{{ route.params.city }}</h1>
       <p class="text-sm mb-12">
         {{
-          new Date(weatherData.currentTime).toLocaleDateString('en-us', {
-            weekday: 'short',
-            day: '2-digit',
-            month: 'long',
+          new Date(weatherData.currentTime).toLocaleDateString($i18n.locale, {
+            weekday: $t('dateFormat.weekday'),
+            day: $t('dateFormat.day'),
+            month: $t('dateFormat.month'),
           })
         }}
         {{
-          new Date(weatherData.currentTime).toLocaleTimeString('en-us', {
-            timeStyle: 'short',
+          new Date(weatherData.currentTime).toLocaleTimeString($i18n.locale, {
+            timeStyle: $t('timeFormat.timeStyle'),
           })
         }}
       </p>
@@ -31,7 +30,7 @@
         {{ convertToCelsius(weatherData.current.temp) }}&deg;
       </p>
       <p>
-        Feels like
+        {{ $t('feelsLike') }}
         {{ convertToCelsius(weatherData.current.feels_like) }} &deg;
       </p>
       <p class="capitalize">
@@ -49,7 +48,7 @@
     <!-- Hourly Weather -->
     <div class="max-w-screen-md w-full py-12">
       <div class="mx-8 text-white">
-        <h2 class="mb-4">Hourly Weather</h2>
+        <h2 class="mb-4">{{ $t('h2line51') }}</h2>
         <div class="flex gap-10 overflow-x-scroll">
           <div
             v-for="hourData in weatherData.hourly"
@@ -79,7 +78,7 @@
     <!-- Weekly Weather -->
     <div class="max-w-screen-md w-full py-12">
       <div class="mx-8 text-white">
-        <h2 class="mb-4">7 Day Forecast</h2>
+        <h2 class="mb-4">{{ $t('h2line81') }}</h2>
         <div
           v-for="day in weatherData.daily"
           :key="day.dt"
@@ -87,8 +86,8 @@
         >
           <p class="flex-1">
             {{
-              new Date(day.dt * 1000).toLocaleDateString('en-us', {
-                weekday: 'long',
+              new Date(day.dt * 1000).toLocaleDateString($i18n.locale, {
+                weekday: 'long', // ใช้ long เพื่อให้แสดงชื่อวัน
               })
             }}
           </p>
@@ -98,8 +97,8 @@
             alt=""
           />
           <div class="flex gap-2 flex-1 justify-end">
-            <p>H: {{ convertToCelsius(day.temp.max) }}</p>
-            <p>L: {{ convertToCelsius(day.temp.min) }}</p>
+            <p>{{ $t('pline100') }}: {{ convertToCelsius(day.temp.max) }}</p>
+            <p>{{ $t('pline101') }}: {{ convertToCelsius(day.temp.min) }}</p>
           </div>
         </div>
       </div>
@@ -110,7 +109,7 @@
       @click="removeCity"
     >
       <i class="fa-solid fa-trash"></i>
-      <p>Remove City</p>
+      <p>{{ $t('pline112') }}</p>
     </div>
   </div>
 </template>

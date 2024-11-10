@@ -1,4 +1,5 @@
 <template>
+  <SpeedInsights />
   <SiteNavigation />
   <div class="flex flex-col min-h-screen font-Roboto bg-weather-primary">
     <div class="flex-1">
@@ -13,12 +14,16 @@
 </template>
 
 <script setup>
+import { SpeedInsights } from '@vercel/speed-insights/vue'
 import { RouterView } from 'vue-router'
 import SiteNavigation from '@/components/SiteNavigation.vue'
 import FootersSite from './components/FootersSite.vue'
 </script>
 
 <style>
+* {
+  font-family: 'Kanit', sans-serif;
+}
 .page-enter-active,
 .page-leave-active {
   transition: 600ms ease all;

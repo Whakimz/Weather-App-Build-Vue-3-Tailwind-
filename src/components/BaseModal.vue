@@ -19,7 +19,7 @@
               class="text-white mt-8 bg-weather-primary py-2 px-6 rounded-md hover:bg-weather-secondary transition-colors duration-300"
               @click="$emit('close-modal')"
             >
-              Close
+              {{ $t('modalButtonline18') }}
             </button>
           </div>
         </transition>

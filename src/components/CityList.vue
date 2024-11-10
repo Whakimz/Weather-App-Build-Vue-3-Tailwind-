@@ -7,7 +7,7 @@
     class="text-white items-center text-center"
     v-if="savedCities.length === 0"
   >
-    No locations added. To start tracking a location, search in the field above.
+    {{ $t('pcityLine6') }}
   </p>
 </template>
 
