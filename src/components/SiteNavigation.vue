@@ -128,7 +128,6 @@ const switchLanguage = lang => {
   currentLang.value = lang
   localStorage.setItem('language', lang)
   dropdownVisible.value = false
-  window.location.reload()
   // You can set locale if you are using vue-i18n
 }
 
